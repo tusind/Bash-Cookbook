@@ -1,0 +1,17 @@
+#+NAME: .gitignore
+#+ -*- for emacs extentions
+*~
+*#
+*/.#
+*/.#*
+**/*~
+#+ -*- for vim extentions
+*.swp
+*.swo
+**/*~
+**/*.bak
+**/*.sw[abcdefghijklmnop]
+#+ -*- db
+*lock
+# -*- logs
+**/*.log*
