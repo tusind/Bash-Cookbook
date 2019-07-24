@@ -1,11 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 GB_CSV="testdata/garbage.csv"
 EM_CSV="testdata/employees.csv"
-# Let's strip the garbage out of the last lines in the CSV called garbage.csv
-# Notice the forloop; there is a caveat
 
-set IFS=,
-set oldIFS = $IFS
+# Let's strip the garbage out of the last lines in the CSV called
+# garbage.csv
+# Notice the forloop; there is a caveat
+IFS=,
+#OLDIFS="$IFS"
 readarray -t ARR < ${GB_CSV}
 
 # How many rows do we have?
@@ -16,43 +17,44 @@ echo "We have ${ARRY_ELEM} rows in ${GB_CSV}"
 INC=0
 for i in "${ARR[@]}"
 do
-   : 
-  ARR[$INC]=$(echo $i | sed 's/ //g')
+   :
+  ARR[$INC]=$(echo "$i" | sed 's/ //g')
   echo "${ARR[$INC]}"
-  INC=$[$INC+1]
+  INC=$(("$INC+1"))
 done
 
 # Remove the last character and make ALL upper case
 INC=0
 for i in "${ARR[@]}"
 do
-   : 
-  ARR[$INC]=$(echo $i | sed 's/.$//' | sed -e 's/.*/\U&/' )
+   :
+  ARR[$INC]=$(echo "$i" | sed 's/.$//' | sed -e 's/.*/\U&/' )
   echo "${ARR[$INC]}"
-  INC=$[$INC+1]
+  INC=$(("$INC+1"))
 done
 
 # Want to add a # at the beginning of each line?
-set IFS=,
-set oldIFS = $IFS
+IFS=,
+# OLDIFS="$IFS"
 readarray -t ARR < ${EM_CSV}
 
 INC=0
 for i in "${ARR[@]}"
 do
-   : 
-  ARR[$INC]=$(sed -e 's/^/#/' <<< $i )
+   :
+  ARR[$INC]=$(sed -e 's/^/#/' <<< "$i" )
   echo "${ARR[$INC]}"
-  INC=$[$INC+1]
+  INC=$(("$INC+1"))
 done
 
 # Sed can also be used on a per file basis too!
 
-# Want to just strip Bob out and change his name to Robert by manipulating
-# the file inplace?
+# Want to just strip Bob out and change his name to Robert by
+# manipulating the file inplace?
 
 sed -i 's/Bob/Robert/' ${EM_CSV}
-sed -i 's/^/#/' ${EM_CSV} # In place, instead of on the data in the array
+ # In place, instead of on the data in the array
+sed -i 's/^/#/' ${EM_CSV}
 cat ${EM_CSV}
 
 # Now lets remove the birthdate field from the files

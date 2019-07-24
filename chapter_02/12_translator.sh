@@ -1,8 +1,9 @@
 #!/bin/bash
-./hellobonjour.sh
+./11_hellobonjour.sh
 
 export TEXTDOMAIN="hellobonjour"
-export TEXTDOMAINDIR=`pwd`/locale
+TEXTDOMAINDIR=$(pwd /locale)
+export TEXTDOMAINDIR
 
 export LANGUAGE=fr
-./hellobonjour.sh
+./11_hellobonjour.sh

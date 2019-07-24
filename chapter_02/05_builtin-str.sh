@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Let's play with variable arrays first using Bash's equivalent of substr
-
+# Let's play with variable arrays first using Bash's equivalent of
+# substr
 STR="1234567890asdfghjkl"
 
 echo "first character ${STR:0:1}"
@@ -13,7 +13,6 @@ echo "forth to sixth character ${STR: 3: 3}"
 echo "last character ${STR: -1}"
 
 # Next, can we compare the alphabeticalness of strings?
-
 STR2="abc"
 STR3="bcd"
 STR4="Bcd"

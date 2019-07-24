@@ -14,13 +14,13 @@ grep -r "${SEARCH_TERM}" "${DIRECTORY}" > result2.txt
 grep -r -e "${SEARCH_TERM}" -e "Publishing" "${DIRECTORY}" > result3.txt
 
 # What about find?
-find "${DIRECTORY}" -type f -print | xargs grep "${SEARCH_TERM}" > result4.txt
+find "${DIRECTORY}" -type f -print0 | xargs -0 grep "${SEARCH_TERM}" > result4.txt
 
 # What about find and looking for the string inside of a specific type of content?
-find "${DIRECTORY}" -type f -name "*.xml" ! -name "*.css" -print | xargs grep "${SEARCH_TERM}" > result5.txt
+find "${DIRECTORY}" -type f  -print0 -name "*.xml" ! -name "*.css" -print | xargs -0 grep "${SEARCH_TERM}" > result5.txt
 
 # Can this also be achieved with wildcards and subshell?
-grep "${SEARCH_TERM}" $(ls -R "${DIRECTORY}"*.{html,txt}) > result6.txt
+grep "${SEARCH_TERM}" "$(ls -R "${DIRECTORY}"*.{html,txt})" > result6.txt
 RES=$?
 
 if [ ${RES} -eq 0 ]; then
