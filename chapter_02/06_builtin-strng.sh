@@ -1,11 +1,16 @@
 #!/bin/bash
 GB_CSV="testdata/garbage.csv"
 EM_CSV="testdata/employees.csv"
-# Let's strip the garbage out of the last lines in the CSV called garbage.csv
+
+# Let's strip the garbage out of the last lines in the CSV called
+# garbage.csv
 # Notice the forloop; there is a caveat
 
-set IFS=,
-set oldIFS = $IFS
+# set? WTF
+##set IFS=,
+# oldIFS is not used in the script
+##set oldIFS = $IFS
+IFS=","
 readarray -t ARR < ${GB_CSV}
 
 # How many rows do we have?
@@ -16,40 +21,40 @@ echo "We have ${ARRY_ELEM} rows in ${GB_CSV}"
 INC=0
 for i in "${ARR[@]}"
 do
-   : 
+   :
   res="${i//[^ ]}"
   TMP_CNT="${#res}"
-  while [ ${TMP_CNT} -gt 0 ]; do
+  while [ "${TMP_CNT}" -gt 0 ]; do
     i=${i/, /,}
-    TMP_CNT=$[$TMP_CNT-1]
+    TMP_CNT=$(("$TMP_CNT-1"))
   done
   ARR[$INC]=$i
-  INC=$[$INC+1] 
+  INC=$(("$INC+1"))
 done
 
 # Lets remove the last character from each line
 INC=0
 for i in "${ARR[@]}"
 do
-   : 
+   :
   ARR[$INC]=${i::-1}
-  INC=$[$INC+1]
+  INC=$(("$INC+1"))
 done
-  
+
 # Now, let's turn all of the characters into uppercase!
 INC=0
 for i in "${ARR[@]}"
 do
-   : 
+   :
   ARR[$INC]=${i^^}
   printf "%s" "${ARR[$INC]}"
-  INC=$[$INC+1]
+  INC=$(("$INC+1"))
   echo
 done
 
-# In employees.csv update the first field to be prepended with a # character
-set IFS=,
-set oldIFS = $IFS
+# In employees.csv update the first field to be prepended with a #
+# character
+IFS=,
 readarray -t ARR < ${EM_CSV}
 
 # How many rows do we have?
@@ -60,24 +65,25 @@ echo;echo "We have ${ARRY_ELEM} rows in ${EM_CSV}"
 INC=0
 for i in "${ARR[@]}"
 do
-   : 
+   :
   ARR[$INC]="#${i}"
   printf "%s" "${ARR[$INC]}"
-  INC=$[$INC+1]
+  INC=$(("$INC+1"))
   echo
 done
 
-# Bob had a name change, he wants to go by the name Robert - replace it!
+# Bob had a name change, he wants to go by the name Robert - replace
+# it!
 echo
 echo "Let's make Bob, Robert!"
 INC=0
 for i in "${ARR[@]}"
 do
-   : 
+   :
    # We need to iterate through Bobs first
   ARR[$INC]=${i/Bob/Robert}
   printf "%s" "${ARR[$INC]}"
-  INC=$[$INC+1]
+  INC=$(("$INC+1"))
   echo
 done
 
@@ -101,11 +107,11 @@ do
       STR="${STR},${field}"
     elif [ $TMP_CNT -eq 0 ]; then
       STR="${STR}${field}"
-    fi 
-    TMP_CNT=$[$TMP_CNT+1]
+    fi
+    TMP_CNT=$(("$TMP_CNT+1"))
   done
 
   ARR[$INC]=$STR
   echo "${ARR[$INC]}"
-  INC=$[$INC+1]
+  INC=$(("$INC+1"))
 done
