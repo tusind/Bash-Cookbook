@@ -1,7 +1,7 @@
 #!/bin/bash
 FNAME=""
 LEN=10
-TYPE="line" 
+TYPE="line"
 OPT_ERROR=0
 set -f
 
@@ -11,10 +11,10 @@ function determine_type_of_file() {
   RES=$?
   if [ $RES -eq 0 ]; then
     echo "ASCII file - continuing"
-    
+
   else
     echo "Not an ASCII file, perhaps it is Binary?"
-  fi 
+  fi
 }
 
 function write_to_file() {
@@ -28,7 +28,7 @@ function read_and_split_by_line() {
   local L_CNT=0
   local F_CNT=0
   local BUFFER=""
-  
+
   # Read with the -r flag
   while IFS= read -r LINE;
   do
@@ -38,12 +38,12 @@ function read_and_split_by_line() {
     # efficent for IO
     if [ ${L_CNT} -eq ${LEN} ]; then
       F_CNT=$((F_CNT+1))
-      write_to_file "${B_FNAME}" ${F_CNT} "${BUFFER}"
+      write_to_file "${B_FNAME}" "${F_CNT}" "${BUFFER}"
       L_CNT=0
       BUFFER=""
     fi
-  done < ${B_FNAME}
-  
+  done < "${B_FNAME}"
+
   # If we read everything, we should write what remains in the buffer!
   if [ "${BUFFER}" != "" ]; then
     F_CNT=$((F_CNT+1))
@@ -57,13 +57,13 @@ function read_and_write_by_size() {
   local F_CNT=0
   local BUFFER=""
   PAGESIZE=$(getconf PAGESIZE)
-  
+
   # Read with the -n flag
-  while IFS= read -n ${PAGESIZE} LINE;
+  while IFS= read -n "${PAGESIZE}" LINE;
   do
     BUFFER+="${LINE}"
     L_CNT=$((L_CNT+1))
-    # Len should reflect an optimal bloc ksize or something for 
+    # Len should reflect an optimal bloc ksize or something for
     # efficient IO
     if [ $L_CNT -eq ${LEN} ]; then
       F_CNT=$((F_CNT+1))
@@ -71,8 +71,8 @@ function read_and_write_by_size() {
       L_CNT=0
       BUFFER=""
     fi
-  done < ${B_FNAME}
-  
+  done < "${B_FNAME}"
+
   # If we read everything, we should write what remains in the buffer!
   if [ "${BUFFER}" != "" ]; then
     F_CNT=$((F_CNT+1))
@@ -85,7 +85,7 @@ while getopts ":i:l:t:" opt; do
   case $opt in
   i)
     FNAME="$OPTARG"
-    if [ ! -e $FNAME ] && [ ! -f $FNAME ]; then
+    if [ ! -e "$FNAME" ] && [ ! -f "$FNAME" ]; then
       echo "ERROR: Input file parameter does not exit, or is not a file"
       OPT_ERROR+=1
     fi
@@ -99,7 +99,7 @@ while getopts ":i:l:t:" opt; do
     ;;
   l)
     LEN="$OPTARG"
-    if [ $LEN -le 0 ]; then
+    if [ "$LEN" -le 0 ]; then
       echo "ERROR: -l must be greater than 0"
       OPT_ERROR+=1
     fi
