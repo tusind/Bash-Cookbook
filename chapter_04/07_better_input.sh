@@ -1,16 +1,23 @@
 #!/bin/bash
 FILE_NAME=$1
 
-# first, strip underscores
-FILE_NAME_CLEAN=${FILE_NAME//_/}
+echo "$FILE_NAME"
 
-FILE_NAME_CLEAN=$(sed 's/..//g' <<< ${FILE_NAME_CLEAN})
+# github examples have underscores
+# FILE_NAME_CLEAN=${FILE_NAME//_/}
+
+# now, clean out anything that's not alphanumeric or an underscore
+FILE_NAME_CLEAN=${FILE_NAME//[^a-zA-Z0-9_.]/}
 
 # next, replace spaces with underscores
 FILE_NAME_CLEAN=${FILE_NAME_CLEAN// /_}
 
-# now, clean out anything that's not alphanumeric or an underscore
-FILE_NAME_CLEAN=${FILE_NAME_CLEAN//[^a-zA-Z0-9_.]/}
+echo "$FILE_NAME_CLEAN"
 
-# here you should check to see if the file exists before running the command
-ls "${FILE_NAME_CLEAN}"
+# here you should check to see if the file exists before running the
+# command
+if [ -f "${FILE_NAME_CLEAN}"  ]; then
+    file "${FILE_NAME_CLEAN}";
+else
+    echo "File not found in the current directory";
+fi

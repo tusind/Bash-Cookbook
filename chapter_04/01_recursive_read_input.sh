@@ -1,8 +1,7 @@
 #!/bin/bash
 
 function recursive_func() {
-
-    echo -n "Press anything to continue loop "
+    echo -n "Press anything to continue loop  "
     read input
     recursive_func
 }

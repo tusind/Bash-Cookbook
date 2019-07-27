@@ -8,7 +8,7 @@ echo "WORKER started: $1"
 while :
 do
 
-read BUFFER < "${FIFO_FILE}"
+read -r BUFFER < "${FIFO_FILE}"
 
 if [ "${BUFFER}" != "" ]; then
   echo "Worker received: $BUFFER"
