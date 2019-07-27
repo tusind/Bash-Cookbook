@@ -1,7 +1,9 @@
-serveruptime=`uptime | awk '{print $3,$4}'| sed 's/,//'| grep "day"`;
-if [[ -z "$serveruptime" ]]; then 
-	serveruptime=`uptime | awk '{print $3}'| sed 's/,//'`; 
-	echo $serveruptime
-else 
-	:; 
-fi;
+#!/bin/bash
+
+SERVERUPTIME=$(uptime | awk '{print $3,$4}'| sed 's/,//');
+
+if [[ -n "$SERVERUPTIME" ]]; then
+    echo "uptime: $SERVERUPTIME"
+else
+    echo "Dead Host"
+fi

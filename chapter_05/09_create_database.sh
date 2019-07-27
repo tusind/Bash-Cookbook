@@ -1,4 +1,8 @@
 #!/bin/bash
-mysql -u root -pTraining2@^ <<MY_QUERY
+
+MYSQLPASS="${1}"
+
+echo "create testdb datebase " "${MYSQLPASS}"
+mysql -u root -p "${MYSQLPASS}" << MY_QUERY
 create database testdb;
 MY_QUERY
