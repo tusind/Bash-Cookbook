@@ -1,45 +1,53 @@
 #!/bin/bash
+
+# check if you have mpv installed
+ALARM_SONG="alarm.mp3"
+
 declare -i H
 declare -i M
-declare -i cur_H
-declare -i cur_M
-declare -i min_left
-declare -i hour_left
+declare -i CUR_H
+declare -i CUR_M
+declare -i MIN_LEFT
+declare -i HOUR_LEFT
+
+CUR_H=$(date +%H)
+CUR_M=$(date +%M)
+
+echo -e "\nlet's set an alarm\n "
+echo -e "It is Currently $CUR_H:$CUR_M"
 echo -e "What time do you Wake Up?"
-read H
+read -r H
 echo -e "and Minutes?"
-read  M
-cur_H=`date +%H`
-cur_M=`date +%M`
+read -r M
+
 echo "You Selected "
 echo "$H:$M"
-echo -e "\nIt is Currently $cur_H:$cur_M"
-if [  $cur_H -lt $H ]; then
-    hour_left=`expr $H - $cur_H`
-    echo "$H - $cur_H means You Have: $hour_left hours still"
-fi
-if [ $cur_H -gt $H ]; then
-    hour_left=`expr $cur_H - $H`
-    echo -e  "\n$cur_H - $H means you have $hour_left hours left \n"
-fi
-if [ $cur_H == $H ]; then
-    hour_left=0
+
+if [  "$CUR_H" -lt "$H" ]; then
+    HOUR_LEFT=$(("$H" - "$CUR_H"))
+    echo "$H - $CUR_H means You Have: $HOUR_LEFT hours still"
+elif [ "$CUR_H" -gt "$H" ]; then
+    HOUR_LEFT=$(("$CUR_H" - "$H"))
+    echo -e  "\n $CUR_H - $H means you have $HOUR_LEFT hours left \n"
+elif [ "$CUR_H" == "$H" ]; then
+#    HOUR_LEFT=0
+    HOUR_LEFT=$H
     echo -e "Taking a nap?\n"
 fi
-if [ $cur_M -lt $M ]; then
-    min_left=`expr $M - $cur_M`
-    echo -e "$M -$cur_M you have: $min_left minutes still"
-fi
-if [ $cur_M -gt $M ]; then
-    min_left=`expr $cur_M - $M`
-    echo -e "$cur_M - $M you have $min_left minutes left \n"
-fi
-if [ $cur_M == $M ]; then
-    min_left=0
+
+if [ "$CUR_M" -lt "$M" ]; then
+    MIN_LEFT=$(("$M" - "$CUR_M"))
+    echo -e "$M - $CUR_M you have: $MIN_LEFT minutes still"
+elif [ "$CUR_M" -gt "$M" ]; then
+    MIN_LEFT=$(("$CUR_M" - "$M"))
+    echo -e "$CUR_M - $M you have $MIN_LEFT minutes left \n"
+elif [ "$CUR_M" == "$M" ]; then
+#    MIN_LEFT=0
+    MIN_LEFT=$M
     echo -e "and no minutes\n"
 fi
 
-echo -e "Sleeping for $hour_left hours and $min_left minutes \n"
-sleep $hour_left\h
-sleep $min_left\m
-mplayer ~/.alarm/alarm.mp3
+echo -e "Sleeping for $HOUR_LEFT hours and $MIN_LEFT minutes \n"
+sleep "${HOUR_LEFT}"\h
+sleep "${MIN_LEFT}"\m
+mpv $ALARM_SONG
